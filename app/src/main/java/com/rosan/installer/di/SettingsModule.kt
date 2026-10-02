@@ -18,9 +18,6 @@ import com.rosan.installer.data.settings.repository.AppRepositoryImpl
 import com.rosan.installer.data.settings.repository.AppSettingsRepositoryImpl
 import com.rosan.installer.data.settings.repository.BackupRepositoryImpl
 import com.rosan.installer.data.settings.repository.ConfigRepositoryImpl
-import com.rosan.installer.data.settings.repository.OperationHistoryRepositoryImpl
-import com.rosan.installer.domain.history.repository.OperationHistoryRepository
-import com.rosan.installer.domain.history.usecase.RecordOperationHistoryUseCase
 import com.rosan.installer.domain.settings.provider.PrivilegedProvider
 import com.rosan.installer.domain.settings.provider.SystemAppProvider
 import com.rosan.installer.domain.settings.provider.SystemEnvProvider
@@ -59,11 +56,9 @@ val settingsModule = module {
 
     single { get<InstallerRoom>().appDao }
     single { get<InstallerRoom>().configDao }
-    single { get<InstallerRoom>().operationHistoryDao }
 
     singleOf(::AppRepositoryImpl) { bind<AppRepository>() }
     singleOf(::ConfigRepositoryImpl) { bind<ConfigRepository>() }
-    singleOf(::OperationHistoryRepositoryImpl) { bind<OperationHistoryRepository>() }
     singleOf(::BackupRepositoryImpl) { bind<BackupRepository>() }
 
     single(createdAtStart = true) {
@@ -123,5 +118,4 @@ val settingsModule = module {
     factoryOf(::ManagePackageListUseCase)
     factoryOf(::ManageSharedUidListUseCase)
     factoryOf(::GetPackageUidUseCase)
-    factoryOf(::RecordOperationHistoryUseCase)
 }

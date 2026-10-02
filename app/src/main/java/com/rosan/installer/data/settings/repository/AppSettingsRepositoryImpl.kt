@@ -13,7 +13,6 @@ import com.rosan.installer.domain.settings.model.config.Authorizer
 import com.rosan.installer.domain.settings.model.config.BiometricAuthMode
 import com.rosan.installer.domain.settings.model.config.NetworkSourceMode
 import com.rosan.installer.domain.settings.model.preferences.AppPreferences
-import com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel
 import com.rosan.installer.domain.settings.model.preferences.HttpProfile
 import com.rosan.installer.domain.settings.model.preferences.PredictiveBackAnimation
 import com.rosan.installer.domain.settings.model.preferences.PredictiveBackExitDirection
@@ -42,17 +41,6 @@ class AppSettingsRepositoryImpl(
 
     // Replaced brittle combine(listOf(...)) with a safe mapping from the raw Preferences flow.
     override val preferencesFlow: Flow<AppPreferences> = appDataStore.data.map { prefs ->
-        // Pre-compute values for Github update channel validation
-        val rawGithubUpdateChannel = GithubUpdateChannel.fromValueOrDefault(
-            prefs[AppDataStore.GITHUB_UPDATE_CHANNEL] ?: GithubUpdateChannel.OFFICIAL.name,
-        )
-        val customGithubProxyUrl = prefs[AppDataStore.CUSTOM_GITHUB_PROXY_URL] ?: ""
-        val githubUpdateChannel = if (rawGithubUpdateChannel == GithubUpdateChannel.CUSTOM && customGithubProxyUrl.isBlank()) {
-            GithubUpdateChannel.OFFICIAL
-        } else {
-            rawGithubUpdateChannel
-        }
-
         // Map all preferences explicitly by key. Order no longer matters.
         AppPreferences(
             authorizer = Authorizer.fromValueOrDefault(
@@ -128,10 +116,7 @@ class AppSettingsRepositoryImpl(
             ),
             networkSourceModeWarningAcknowledged =
                 prefs[AppDataStore.NETWORK_SOURCE_MODE_WARNING_ACKNOWLEDGED] ?: false,
-            // Updater
             allowInternetAccess = prefs[AppDataStore.ALLOW_INTERNET_ACCESS] ?: true,
-            githubUpdateChannel = githubUpdateChannel,
-            customGithubProxyUrl = customGithubProxyUrl,
             // Lab
             labRootEnableModuleFlash = prefs[AppDataStore.LAB_ENABLE_MODULE_FLASH] ?: false,
             labRootShowModuleArt = prefs[AppDataStore.LAB_MODULE_FLASH_SHOW_ART] ?: true,
@@ -225,8 +210,6 @@ class AppSettingsRepositoryImpl(
         StringSetting.NetworkSourceMode -> AppDataStore.NETWORK_SOURCE_MODE
         StringSetting.PredictiveBackAnimation -> AppDataStore.PREDICTIVE_BACK_ANIMATION
         StringSetting.PredictiveBackExitDirection -> AppDataStore.PREDICTIVE_BACK_EXIT_DIRECTION
-        StringSetting.GithubUpdateChannel -> AppDataStore.GITHUB_UPDATE_CHANNEL
-        StringSetting.CustomGithubProxyUrl -> AppDataStore.CUSTOM_GITHUB_PROXY_URL
         StringSetting.InstallerBiometricAuthMode -> AppDataStore.INSTALLER_REQUIRE_BIOMETRIC_AUTH
         StringSetting.SmartAuthorizerCandidates -> AppDataStore.SMART_AUTHORIZER_CANDIDATES
     }
@@ -272,10 +255,6 @@ class AppSettingsRepositoryImpl(
         BooleanSetting.UninstallerRequireBiometricAuth -> AppDataStore.UNINSTALLER_REQUIRE_BIOMETRIC_AUTH
 
         BooleanSetting.ShowLauncherIcon -> AppDataStore.SHOW_LAUNCHER_ICON
-
-        BooleanSetting.OperationHistoryEnabled -> AppDataStore.OPERATION_HISTORY_ENABLED
-
-        BooleanSetting.OperationHistoryIndicatorsEnabled -> AppDataStore.OPERATION_HISTORY_INDICATORS_ENABLED
 
         BooleanSetting.UserSetLSPosedActive -> AppDataStore.USER_SET_LSPOSED_ACTIVE
 

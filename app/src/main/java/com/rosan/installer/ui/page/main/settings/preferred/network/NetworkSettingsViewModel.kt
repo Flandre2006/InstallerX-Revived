@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rosan.installer.domain.settings.repository.AppSettingsRepository
 import com.rosan.installer.domain.settings.repository.BooleanSetting
-import com.rosan.installer.domain.settings.repository.IntSetting
 import com.rosan.installer.domain.settings.repository.StringSetting
 import com.rosan.installer.domain.settings.usecase.settings.UpdateSettingUseCase
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,8 +22,6 @@ class NetworkSettingsViewModel(appSettingsRepo: AppSettingsRepository, private v
             networkSourceMode = prefs.networkSourceMode,
             networkSourceModeWarningAcknowledged = prefs.networkSourceModeWarningAcknowledged,
             httpProfile = prefs.labHttpProfile,
-            githubUpdateChannel = prefs.githubUpdateChannel,
-            customGithubProxyUrl = prefs.customGithubProxyUrl,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -54,20 +51,6 @@ class NetworkSettingsViewModel(appSettingsRepo: AppSettingsRepository, private v
                 updateSetting(
                     StringSetting.LabHttpProfile,
                     action.profile.name,
-                )
-            }
-
-            is NetworkSettingsAction.ChangeGithubUpdateChannel -> viewModelScope.launch {
-                updateSetting(
-                    StringSetting.GithubUpdateChannel,
-                    action.channel.name,
-                )
-            }
-
-            is NetworkSettingsAction.ChangeCustomGithubProxyUrl -> viewModelScope.launch {
-                updateSetting(
-                    StringSetting.CustomGithubProxyUrl,
-                    action.url,
                 )
             }
         }

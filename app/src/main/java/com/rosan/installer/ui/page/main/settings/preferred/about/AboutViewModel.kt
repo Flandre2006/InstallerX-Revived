@@ -9,13 +9,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rosan.installer.domain.engine.repository.AppIconRepository.Companion.SETTINGS_APP_LIST
 import com.rosan.installer.domain.engine.usecase.GetAppIconUseCase
-import com.rosan.installer.domain.settings.model.config.ConfigModel
 import com.rosan.installer.domain.settings.provider.SystemEnvProvider
 import com.rosan.installer.domain.settings.repository.AppSettingsRepository
 import com.rosan.installer.domain.settings.repository.BooleanSetting
 import com.rosan.installer.domain.settings.usecase.settings.UpdateSettingUseCase
-import com.rosan.installer.domain.updater.repository.UpdateRepository
-import com.rosan.installer.domain.updater.usecase.PerformAppUpdateUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,14 +22,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class AboutViewModel(
     appSettingsRepo: AppSettingsRepository,
-    private val updateRepo: UpdateRepository,
     private val systemEnvProvider: SystemEnvProvider,
     private val updateSetting: UpdateSettingUseCase,
-    private val performAppUpdate: PerformAppUpdateUseCase,
     private val getAppIcon: GetAppIconUseCase,
 ) : ViewModel() {
 
@@ -47,13 +41,9 @@ class AboutViewModel(
 
     val state: StateFlow<AboutState> = combine(
         appSettingsRepo.preferencesFlow,
-        updateRepo.updateInfoFlow,
         _appIcon,
-    ) { prefs, updateInfo, appIcon ->
+    ) { prefs, appIcon ->
         AboutState(
-            authorizer = prefs.authorizer,
-            hasUpdate = prefs.allowInternetAccess && (updateInfo?.hasUpdate ?: false),
-            remoteVersion = if (prefs.allowInternetAccess) updateInfo?.remoteVersion.orEmpty() else "",
             enableFileLogging = prefs.enableFileLogging,
             appIcon = appIcon,
         )
@@ -64,20 +54,14 @@ class AboutViewModel(
     )
 
     init {
-        checkUpdate()
         loadAppIcon()
     }
 
     fun dispatch(action: AboutAction) {
         when (action) {
-            is AboutAction.PerformUpdate -> performInAppUpdate()
             is AboutAction.SetEnableFileLogging -> setEnableFileLogging(action.enable)
             is AboutAction.ShareLog -> shareLog()
         }
-    }
-
-    private fun checkUpdate(force: Boolean = false) = viewModelScope.launch {
-        updateRepo.checkUpdate(force)
     }
 
     private fun loadAppIcon() = viewModelScope.launch {
@@ -88,18 +72,6 @@ class AboutViewModel(
             preferSystemIcon = true,
         )
         _appIcon.value = bitmap?.asImageBitmap()
-    }
-
-    private fun performInAppUpdate() = viewModelScope.launch {
-        _uiEvents.emit(AboutEvent.ShowUpdateLoading)
-        runCatching {
-            val config = ConfigModel.default.copy(authorizer = state.value.authorizer)
-            performAppUpdate(updateRepo.updateInfoFlow.value, config)
-        }.onFailure { e ->
-            Timber.e(e, "In-app update failed")
-            _uiEvents.emit(AboutEvent.ShowInAppUpdateErrorDetail("Update Failed", e))
-        }
-        _uiEvents.emit(AboutEvent.HideUpdateLoading)
     }
 
     private fun setEnableFileLogging(enable: Boolean) = viewModelScope.launch {

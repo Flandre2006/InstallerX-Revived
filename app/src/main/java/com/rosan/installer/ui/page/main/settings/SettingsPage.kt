@@ -60,7 +60,6 @@ import com.rosan.installer.ui.library.FloatingBottomBarMode
 import com.rosan.installer.ui.navigation.MainPagerState
 import com.rosan.installer.ui.navigation.NavigationTab
 import com.rosan.installer.ui.page.main.settings.config.all.AllPage
-import com.rosan.installer.ui.page.main.settings.history.HistoryPage
 import com.rosan.installer.ui.page.main.settings.home.HomePage
 import com.rosan.installer.ui.page.main.settings.preferred.PreferredPage
 import com.rosan.installer.ui.theme.installerMaterial3BlurEffect
@@ -284,13 +283,7 @@ private fun Material3SettingsPagerContent(
                 outerPadding = outerPadding,
             )
 
-            2 -> HistoryPage(
-                useBlur = useBlur,
-                title = tabs[page].label,
-                outerPadding = outerPadding,
-            )
-
-            3 -> PreferredPage(
+            2 -> PreferredPage(
                 useBlur = useBlur,
                 title = tabs[page].label,
                 outerPadding = outerPadding,

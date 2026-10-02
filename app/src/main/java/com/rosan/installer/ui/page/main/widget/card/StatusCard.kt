@@ -94,13 +94,6 @@ fun StatusWidget(viewModel: AboutViewModel, useBlur: Boolean = false) {
                     text = versionInfoText,
                     style = MaterialTheme.typography.bodyMedium,
                 )
-                if (uiState.hasUpdate) {
-                    Text(
-                        text = stringResource(R.string.update_available, uiState.remoteVersion),
-                        style = MaterialTheme.typography.bodyMediumEmphasized,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
             }
         },
     )

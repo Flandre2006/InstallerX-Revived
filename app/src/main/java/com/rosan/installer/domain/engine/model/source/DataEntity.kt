@@ -251,15 +251,6 @@ sealed class DataEntity(open var source: DataEntity? = null) {
         override fun toString(): String = "$parent!$name"
     }
 
-    class StreamDataEntity(private val stream: InputStream, private val length: Long) : DataEntity() {
-        override fun getInputStream(): InputStream = stream
-
-        // Return the Content-Length from the network
-        override fun getSize(): Long = length
-
-        override fun toString(): String = "NetworkStream(size=$length)"
-    }
-
     /** Retains a descriptor-backed source until an installer explicitly needs a local path. */
     class DeferredFileMaterializationEntity(val file: FileEntity, val cacheDirectory: String) : DataEntity(file.source) {
         override fun getInputStream(): InputStream = file.getInputStream()

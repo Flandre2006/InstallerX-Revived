@@ -11,9 +11,7 @@
     <string name="menu">Menü</string>
     <string name="about">Über</string>
     <string name="other">Andere</string>
-    <string name="about_detail">Über InstallerX Revived</string>
-    <string name="get_update">Update erhalten</string>
-    <string name="get_update_detail">Nach Software-Updates und neuen Funktionen suchen</string>
+    <string name="about_detail">Über InstallerX</string>
     <string name="internet_access_enabled">Internetzugriff aktiviert</string>
     <string name="internet_access_disabled">Internetzugriff deaktiviert</string>
     <string name="stable">Stabil</string>
@@ -381,12 +379,8 @@
     <string name="suggestion_bypass_blacklist_set_by_user">Einmalige Installation zulassen</string>
     <string name="lab">Labor</string>
     <string name="lab_desc">Zugriff auf experimentelle und Entwicklerfunktionen</string>
-    <string name="updating">Aktualisiere…</string>
-    <string name="update_available">Aktualisierung verfügbar: %1$s</string>
-    <string name="get_update_directly">Aktualisierung direkt abrufen</string>
-    <string name="get_update_directly_desc">Aktualisierung direkt von Github herunterladen und installieren, kein Cache wird verbleiben</string>
-    <string name="uninstall_title">Deinstalliere InstallerX Revived</string>
-    <string name="uninstall_content">Nach der Deinstallation dieser App wirst du InstallerX Revived nicht mehr zum installieren von Apps verwenden können.</string>
+    <string name="uninstall_title">Deinstalliere InstallerX</string>
+    <string name="uninstall_content">Nach der Deinstallation dieser App wirst du InstallerX nicht mehr zum installieren von Apps verwenden können.</string>
     <string name="theme_settings_miuix_custom_colors">Benutzerdefinierte Farben</string>
     <string name="theme_settings_miuix_custom_colors_desc">Designfarben im MIUI-Designstil anpassen</string>
     <string name="theme_settings_theme_mode">Designmodus</string>

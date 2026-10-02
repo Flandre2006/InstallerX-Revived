@@ -45,7 +45,6 @@ import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.navigation.MainPagerState
 import com.rosan.installer.ui.navigation.Route
 import com.rosan.installer.ui.page.miuix.settings.config.all.MiuixAllPage
-import com.rosan.installer.ui.page.miuix.settings.history.MiuixHistoryPage
 import com.rosan.installer.ui.page.miuix.settings.home.MiuixHomePage
 import com.rosan.installer.ui.page.miuix.settings.preferred.MiuixPreferredPage
 import top.yukonga.miuix.kmp.basic.FloatingActionButton
@@ -416,13 +415,7 @@ private fun SettingsPagerContent(
                 snackbarHostState = snackbarHostState,
             )
 
-            2 -> MiuixHistoryPage(
-                enableBlur = useBlur,
-                title = navigationItems[page].label,
-                outerPadding = outerPadding,
-            )
-
-            3 -> MiuixPreferredPage(
+            2 -> MiuixPreferredPage(
                 enableBlur = useBlur,
                 title = navigationItems[page].label,
                 outerPadding = outerPadding,

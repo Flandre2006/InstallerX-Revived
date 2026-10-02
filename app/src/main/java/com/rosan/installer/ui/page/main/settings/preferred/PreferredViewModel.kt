@@ -17,7 +17,6 @@ import com.rosan.installer.domain.settings.usecase.backup.PrepareBackupRestoreUs
 import com.rosan.installer.domain.settings.usecase.backup.RestoreBackupUseCase
 import com.rosan.installer.domain.settings.usecase.settings.SetLauncherIconUseCase
 import com.rosan.installer.domain.settings.usecase.settings.UpdateSettingUseCase
-import com.rosan.installer.domain.updater.repository.UpdateRepository
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -35,7 +34,6 @@ import timber.log.Timber
 
 class PreferredViewModel(
     appSettingsRepo: AppSettingsRepository,
-    private val updateRepo: UpdateRepository,
     private val systemEnvProvider: SystemEnvProvider,
     private val privilegedProvider: PrivilegedProvider,
     private val setLauncherIcon: SetLauncherIconUseCase,
@@ -61,9 +59,8 @@ class PreferredViewModel(
         appSettingsRepo.preferencesFlow,
         adbVerifyEnabledFlow,
         isIgnoringBatteryOptFlow,
-        updateRepo.updateInfoFlow,
         backupBusyFlow,
-    ) { prefs, adbVerify, batteryOpt, updateInfo, backupBusy ->
+    ) { prefs, adbVerify, batteryOpt, backupBusy ->
         val customizeAuthorizer = if (prefs.authorizer == Authorizer.Customize) prefs.customizeAuthorizer else ""
 
         PreferredViewState(
@@ -73,8 +70,6 @@ class PreferredViewModel(
             adbVerifyEnabled = adbVerify,
             isIgnoringBatteryOptimizations = batteryOpt,
             allowInternetAccess = prefs.allowInternetAccess,
-            hasUpdate = prefs.allowInternetAccess && (updateInfo?.hasUpdate ?: false),
-            remoteVersion = if (prefs.allowInternetAccess) updateInfo?.remoteVersion.orEmpty() else "",
             backupBusy = backupBusy,
         )
     }.stateIn(
@@ -86,7 +81,6 @@ class PreferredViewModel(
     init {
         refreshIgnoreBatteryOptStatus()
         refreshAdbVerifyStatus()
-        checkUpdate()
     }
 
     fun dispatch(action: PreferredViewAction) {
@@ -145,10 +139,6 @@ class PreferredViewModel(
         systemEnvProvider.isAdbVerifyEnabledFlow().collect { enabled ->
             adbVerifyEnabledFlow.value = enabled
         }
-    }
-
-    private fun checkUpdate() = viewModelScope.launch(Dispatchers.IO) {
-        updateRepo.checkUpdate()
     }
 
     private fun setDefaultInstaller(lock: Boolean, action: PreferredViewAction) = viewModelScope.launch {

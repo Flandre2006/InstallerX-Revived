@@ -19,8 +19,6 @@ enum class StringSetting {
     NetworkSourceMode,
     PredictiveBackAnimation,
     PredictiveBackExitDirection,
-    GithubUpdateChannel,
-    CustomGithubProxyUrl,
     InstallerBiometricAuthMode,
     SmartAuthorizerCandidates,
 }
@@ -50,8 +48,6 @@ enum class BooleanSetting {
     AlwaysUseRootInSystem,
     UninstallerRequireBiometricAuth,
     ShowLauncherIcon,
-    OperationHistoryEnabled,
-    OperationHistoryIndicatorsEnabled,
     PreferSystemIconForInstall,
     ShowDialogWhenPressingNotification,
     UserReadScopeTips,

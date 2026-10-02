@@ -36,7 +36,6 @@ import com.rosan.installer.domain.engine.usecase.ClearAppIconCacheUseCase
 import com.rosan.installer.domain.engine.usecase.GetSessionConfirmationDetailsUseCase
 import com.rosan.installer.domain.engine.usecase.ProcessInstallationUseCase
 import com.rosan.installer.domain.engine.usecase.ProcessUninstallUseCase
-import com.rosan.installer.domain.packageupdate.model.PendingSelfUpdateHistory
 import com.rosan.installer.domain.privileged.provider.ShellExecutionProvider
 import com.rosan.installer.domain.session.model.ConfirmationRequest
 import com.rosan.installer.domain.session.model.ConfirmationRequestType
@@ -616,10 +615,7 @@ class ActionHandler(override val scope: CoroutineScope, override val session: In
         }
         // Android 17 may kill this process before a successful self-update call returns.
         // Persist the expected package state immediately before handing control to PackageManager.
-        val recoveryArmed = selfUpdate != null && selfUpdateRecoveryManager.arm(
-            sessionId = sessionId,
-            history = selfUpdate.toPendingSelfUpdateHistory(),
-        )
+        val recoveryArmed = selfUpdate != null && selfUpdateRecoveryManager.arm(sessionId)
 
         try {
             install()
@@ -631,36 +627,6 @@ class ActionHandler(override val scope: CoroutineScope, override val session: In
             }
             throw error
         }
-    }
-
-    private fun PackageAnalysisResult.toPendingSelfUpdateHistory(): PendingSelfUpdateHistory? {
-        val selectedEntities = appEntities.filter { it.selected }
-        val base = selectedEntities
-            .map { it.app }
-            .filterIsInstance<AppEntity.BaseEntity>()
-            .firstOrNull()
-            ?: appEntities
-                .map { it.app }
-                .filterIsInstance<AppEntity.BaseEntity>()
-                .firstOrNull()
-            ?: return null
-        val installed = installedAppInfo?.takeUnless { it.isUninstalled }
-
-        return PendingSelfUpdateHistory(
-            packageName = packageName,
-            appLabel = base.label ?: installed?.label,
-            oldVersionName = installed?.versionName,
-            oldVersionCode = installed?.versionCode,
-            newVersionName = base.versionName,
-            newVersionCode = base.versionCode,
-            sourcePaths = selectedEntities
-                .mapNotNull { it.app.data.sourcePath() }
-                .distinct(),
-            initiatorPackageName = session.config.initiatorPackageName,
-            authorizer = session.config.authorizer,
-            installMode = session.config.installMode,
-            operationSessionKey = sessionId,
-        )
     }
 
     private suspend fun resolveConfirm(activity: Activity, request: ConfirmationRequest) {
@@ -874,7 +840,6 @@ class ActionHandler(override val scope: CoroutineScope, override val session: In
                 sessionId = sessionId,
                 granted = granted,
                 config = session.config,
-                details = detailsBeforeApprove,
             )
         } catch (error: CancellationException) {
             session.confirmationState.value = ConfirmationState.AwaitingDecision(detailsBeforeApprove)
@@ -1013,7 +978,7 @@ class ActionHandler(override val scope: CoroutineScope, override val session: In
     private fun installMetadata(): InstallMetadata = InstallMetadata(
         sourceUris = session.sourceUris,
         referrerUri = session.referrerUri,
-        operationSessionKey = session.id,
+        installerSessionId = session.id,
         onPlatformSessionActiveChanged = session::setPlatformSessionActive,
     )
 

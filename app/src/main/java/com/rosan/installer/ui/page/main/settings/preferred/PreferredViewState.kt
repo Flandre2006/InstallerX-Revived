@@ -9,8 +9,6 @@ data class PreferredViewState(
     val isIgnoringBatteryOptimizations: Boolean = false,
     val showLauncherIcon: Boolean = true,
     val allowInternetAccess: Boolean = true,
-    val hasUpdate: Boolean = false,
-    val remoteVersion: String = "",
     val backupBusy: Boolean = false,
 ) {
     val authorizerCustomize = authorizer == Authorizer.Customize

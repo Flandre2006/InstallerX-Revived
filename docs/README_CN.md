@@ -52,6 +52,12 @@ InstallerX Revived 是一款现代 Android 软件包安装器，也是原 [Insta
 
 InstallerX 现在只发布一个 APK，联网功能由应用内设置控制。发布文件名继续保留 `online` 仅用于兼容旧版应用内更新客户端，不再代表独立的构建变体。
 
+## 数据与升级
+
+应用内检查更新和直接更新安装功能已移除，包括自动检查和 GitHub 更新代理设置。升级请手动安装新版 APK。网络链接 APK 安装功能仍然保留，并继续受应用内联网开关控制。设置备份不再包含更新通道和代理设置；旧版备份中的这些设置将被忽略。
+
+操作历史记录功能已移除。升级时会删除已保存的操作记录，保留配置文件、应用作用域和设置。设置备份不再包含操作记录；旧版备份仍可还原配置文件、作用域和设置，其中的历史记录数据将被忽略。
+
 ## 构建项目
 
 InstallerX Revived 是 Android Gradle 项目。
@@ -87,7 +93,7 @@ gpr.key=YOUR_PERSONAL_ACCESS_TOKEN
 使用单独应用 ID 的 PR 检查构建：
 
 ```bash
-./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.revived.test"
+./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.rev.test"
 ```
 
 ## 常见问题

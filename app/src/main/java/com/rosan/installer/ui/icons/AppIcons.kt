@@ -55,7 +55,6 @@ import androidx.compose.material.icons.twotone.Flare
 import androidx.compose.material.icons.twotone.GppBad
 import androidx.compose.material.icons.twotone.GppMaybe
 import androidx.compose.material.icons.twotone.Healing
-import androidx.compose.material.icons.twotone.History
 import androidx.compose.material.icons.twotone.HourglassDisabled
 import androidx.compose.material.icons.twotone.HourglassEmpty
 import androidx.compose.material.icons.twotone.Info
@@ -65,7 +64,6 @@ import androidx.compose.material.icons.twotone.Language
 import androidx.compose.material.icons.twotone.LibraryAddCheck
 import androidx.compose.material.icons.twotone.LocalPolice
 import androidx.compose.material.icons.twotone.Memory
-import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.NoEncryption
 import androidx.compose.material.icons.twotone.Notifications
 import androidx.compose.material.icons.twotone.NotificationsActive
@@ -87,7 +85,6 @@ import androidx.compose.material.icons.twotone.SmartDisplay
 import androidx.compose.material.icons.twotone.Source
 import androidx.compose.material.icons.twotone.Style
 import androidx.compose.material.icons.twotone.SwapHoriz
-import androidx.compose.material.icons.twotone.SystemUpdate
 import androidx.compose.material.icons.twotone.Tag
 import androidx.compose.material.icons.twotone.Terminal
 import androidx.compose.material.icons.twotone.Timer
@@ -119,12 +116,10 @@ object AppIcons {
     val Launcher = Icons.TwoTone.RocketLaunch
     val RootMethod = Icons.TwoTone.Extension
     val FlashPreferRoot = Icons.TwoTone.Bolt
-    val History = Icons.TwoTone.History
     val License = Icons.TwoTone.LocalPolice
     val Lab = Icons.TwoTone.Science
     val Suggestion = Icons.TwoTone.AutoAwesome
     val Tip = Icons.Filled.Lightbulb
-    val Update = Icons.TwoTone.SystemUpdate
     val Download = Icons.TwoTone.Download
     val Rule = Icons.AutoMirrored.TwoTone.Rule
     val Search = Icons.TwoTone.Search
@@ -181,7 +176,6 @@ object AppIcons {
     val Settings = Icons.TwoTone.Settings
     val Network = Icons.TwoTone.Language
     val NetworkSource = Icons.TwoTone.CloudDownload
-    val UpdateChannel = Icons.TwoTone.SystemUpdate
     val OEMSpecial = Icons.TwoTone.FindInPage
     val ShowSize = Icons.AutoMirrored.TwoTone.CompareArrows
     val Bypass = Icons.TwoTone.NoEncryption
@@ -232,7 +226,6 @@ object AppIcons {
     // --- Menu icons set ---
     val Menu = Icons.Filled.Menu
     val MenuOpen = Icons.AutoMirrored.TwoTone.MenuOpen
-    val MoreVert = Icons.TwoTone.MoreVert
     val DragHandle = R.drawable.ic_navigation_rearrange
     // --- Menu icons end ---
 

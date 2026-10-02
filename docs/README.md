@@ -52,6 +52,12 @@ When reporting bugs, please reproduce them on the latest Alpha or CI build whene
 
 InstallerX is now published as a single APK. Network access is controlled by an in-app setting. The release filename continues to include `online` only for compatibility with older in-app update clients; it no longer identifies a separate build variant.
 
+## Data and upgrades
+
+In-app update checks and direct update installation have been removed, including automatic checks and GitHub update proxy settings. Install a newer APK manually to upgrade. Network access remains available for installing APKs from network links and still respects the in-app network setting. Settings backups no longer include update-channel or proxy settings; those settings in older backups are ignored.
+
+Operation history has been removed. Upgrading deletes previously stored operation records while preserving profiles, app scopes, and settings. Settings backups no longer include operation records; older backups can still restore profiles, scopes, and settings, but their history data is ignored.
+
 ## Building
 
 InstallerX Revived is an Android Gradle project.
@@ -87,7 +93,7 @@ For a local debug build:
 For a PR-style test build with a separate application id:
 
 ```bash
-./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.revived.test"
+./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.rev.test"
 ```
 
 ## Common Questions

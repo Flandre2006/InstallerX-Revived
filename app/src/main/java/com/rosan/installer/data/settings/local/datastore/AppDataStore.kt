@@ -56,12 +56,6 @@ class AppDataStore(private val dataStore: DataStore<Preferences>, private val js
         val PREDICTIVE_BACK_EXIT_DIRECTION =
             register(stringPreferencesKey("predictive_back_exit_direction"), PreferenceValueType.STRING)
 
-        // Operation History
-        val OPERATION_HISTORY_ENABLED =
-            register(booleanPreferencesKey("operation_history_enabled"), PreferenceValueType.BOOLEAN)
-        val OPERATION_HISTORY_INDICATORS_ENABLED =
-            register(booleanPreferencesKey("operation_history_indicators_enabled"), PreferenceValueType.BOOLEAN)
-
         // Show Live Activity
         val SHOW_LIVE_ACTIVITY = register(booleanPreferencesKey("show_live_activity"), PreferenceValueType.BOOLEAN)
 
@@ -191,10 +185,6 @@ class AppDataStore(private val dataStore: DataStore<Preferences>, private val js
 
         // Debug
         val ENABLE_FILE_LOGGING = register(booleanPreferencesKey("enable_file_logging"), PreferenceValueType.BOOLEAN)
-
-        // Updater
-        val GITHUB_UPDATE_CHANNEL = register(stringPreferencesKey("github_update_channel"), PreferenceValueType.STRING)
-        val CUSTOM_GITHUB_PROXY_URL = register(stringPreferencesKey("custom_github_proxy_url"), PreferenceValueType.STRING)
     }
 
     suspend fun putString(key: Preferences.Key<String>, value: String) {

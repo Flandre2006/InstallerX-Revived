@@ -86,7 +86,7 @@ Para una compilación debug local:
 Para una compilación de prueba estilo PR con un identificador de aplicación separado:
 
 ```bash
-./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.revived.test"
+./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.rev.test"
 ```
 
 ## Preguntas comunes

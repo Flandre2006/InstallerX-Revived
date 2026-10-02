@@ -3,7 +3,6 @@
 package com.rosan.installer.ui.page.main.settings.preferred.about
 
 sealed interface AboutAction {
-    data object PerformUpdate : AboutAction
     data class SetEnableFileLogging(val enable: Boolean) : AboutAction
     data object ShareLog : AboutAction
 }

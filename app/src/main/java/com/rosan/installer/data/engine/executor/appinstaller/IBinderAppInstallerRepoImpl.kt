@@ -72,7 +72,7 @@ abstract class IBinderAppInstallerRepoImpl(
         return IPackageInstaller.Stub.asInterface(iBinderWrapper(packageManager.packageInstaller.asBinder()))
     }
 
-    override suspend fun resolveInstallerPackageName(config: ConfigModel): String = when (config.authorizer) {
+    private suspend fun resolveInstallerPackageName(config: ConfigModel): String = when (config.authorizer) {
         Authorizer.Dhizuku -> getDhizukuComponentName()
         Authorizer.None if (!capabilityProvider.isSystemApp) -> BuildConfig.APPLICATION_ID
         else -> config.resolveConfiguredInstallerPackageName()

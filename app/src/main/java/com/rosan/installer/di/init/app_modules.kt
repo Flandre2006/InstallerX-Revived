@@ -12,7 +12,6 @@ import com.rosan.installer.di.packageUpdateModule
 import com.rosan.installer.di.privilegedModule
 import com.rosan.installer.di.serializationModule
 import com.rosan.installer.di.settingsModule
-import com.rosan.installer.di.updateModule
 import com.rosan.installer.di.viewModelModule
 
 val appModules = listOf(
@@ -24,7 +23,6 @@ val appModules = listOf(
     settingsModule,
     engineModule,
     networkModule,
-    updateModule,
     deviceModule,
     initModule,
     privilegedModule,

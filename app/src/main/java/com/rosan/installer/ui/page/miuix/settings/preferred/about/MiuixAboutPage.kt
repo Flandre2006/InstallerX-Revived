@@ -5,7 +5,6 @@
 package com.rosan.installer.ui.page.miuix.settings.preferred.about
 
 import android.content.Context
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -35,13 +34,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -83,15 +80,12 @@ import com.rosan.installer.ui.library.effect.BgEffectBackground
 import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.navigation.Route
 import com.rosan.installer.ui.page.main.settings.preferred.about.AboutAction
-import com.rosan.installer.ui.page.main.settings.preferred.about.AboutEvent
 import com.rosan.installer.ui.page.main.settings.preferred.about.AboutState
 import com.rosan.installer.ui.page.main.settings.preferred.about.AboutViewModel
 import com.rosan.installer.ui.page.main.widget.util.LogEventCollector
-import com.rosan.installer.ui.page.miuix.widgets.ErrorDisplaySheet
 import com.rosan.installer.ui.page.miuix.widgets.MiuixBackButton
 import com.rosan.installer.ui.page.miuix.widgets.MiuixNavigationItemWidget
 import com.rosan.installer.ui.page.miuix.widgets.MiuixSwitchWidget
-import com.rosan.installer.ui.page.miuix.widgets.MiuixUpdateDialog
 import com.rosan.installer.ui.theme.InstallerTheme
 import com.rosan.installer.ui.theme.installerMiuixBlurEffect
 import com.rosan.installer.ui.theme.rememberMiuixBlurBackdrop
@@ -102,7 +96,6 @@ import top.yukonga.miuix.kmp.basic.CardDefaults
 import top.yukonga.miuix.kmp.basic.DropdownArrowEndAction
 import top.yukonga.miuix.kmp.basic.DropdownDefaults
 import top.yukonga.miuix.kmp.basic.DropdownImpl
-import top.yukonga.miuix.kmp.basic.InfiniteProgressIndicator
 import top.yukonga.miuix.kmp.basic.ListPopupColumn
 import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
 import top.yukonga.miuix.kmp.basic.PopupPositionProvider
@@ -129,7 +122,6 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.utils.overScrollVertical
 import top.yukonga.miuix.kmp.utils.scrollEndHaptic
 import top.yukonga.miuix.kmp.window.WindowBottomSheet
-import top.yukonga.miuix.kmp.window.WindowDialog
 import top.yukonga.miuix.kmp.window.WindowListPopup
 
 // Unified entry point
@@ -139,67 +131,13 @@ fun MiuixAboutPage(
     viewModel: AboutViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
-    val showUpdateDialog = remember { mutableStateOf(false) }
-    val showLoadingDialog = remember { mutableStateOf(false) }
-    val showUpdateErrorDialog = remember { mutableStateOf(false) }
-    var updateErrorInfo by remember { mutableStateOf<AboutEvent.ShowInAppUpdateErrorDetail?>(null) }
-
     LogEventCollector(viewModel)
-
-    LaunchedEffect(Unit) {
-        viewModel.uiEvents.collect { event ->
-            when (event) {
-                is AboutEvent.ShowUpdateLoading -> showLoadingDialog.value = true
-
-                is AboutEvent.HideUpdateLoading -> showLoadingDialog.value = false
-
-                is AboutEvent.ShowInAppUpdateErrorDetail -> {
-                    showLoadingDialog.value = false
-                    updateErrorInfo = event
-                    showUpdateErrorDialog.value = true
-                }
-
-                else -> {}
-            }
-        }
-    }
 
     MiuixAboutPageInternal(
         useBlur = useBlur,
         uiState = uiState,
         viewModel = viewModel,
-        onShowUpdateDialog = { showUpdateDialog.value = true },
     )
-
-    // Hoisted common dialogs
-    MiuixUpdateDialog(
-        showState = showUpdateDialog,
-        onDismiss = { showUpdateDialog.value = false },
-    )
-
-    WindowDialog(show = showLoadingDialog.value) {
-        BackHandler { /* Block Input */ }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            InfiniteProgressIndicator()
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(text = stringResource(R.string.updating))
-        }
-    }
-
-    updateErrorInfo?.let { sheetInfo ->
-        ErrorDisplaySheet(
-            title = sheetInfo.title,
-            showState = showUpdateErrorDialog,
-            exception = sheetInfo.exception,
-            onDismissRequest = {
-                showUpdateErrorDialog.value = false
-                updateErrorInfo = null
-            },
-        )
-    }
 }
 
 @Composable
@@ -207,7 +145,6 @@ private fun MiuixAboutPageInternal(
     useBlur: Boolean,
     uiState: AboutState,
     viewModel: AboutViewModel,
-    onShowUpdateDialog: () -> Unit,
 ) {
     val navigator = LocalNavigator.current
     val context = LocalContext.current
@@ -275,8 +212,6 @@ private fun MiuixAboutPageInternal(
                 useBlur = blurSupported,
                 topAppBarScrollBehavior = topAppBarScrollBehavior,
                 onLogoHeightChanged = { logoHeightPx = it },
-                onGetUpdateClicked = onShowUpdateDialog,
-                onDirectUpdateClicked = { viewModel.dispatch(AboutAction.PerformUpdate) },
                 onLicenseClicked = { navigator.push(Route.OpenSourceLicense) },
                 onLogToggle = { viewModel.dispatch(AboutAction.SetEnableFileLogging(it)) },
                 onLogExport = { viewModel.dispatch(AboutAction.ShareLog) },
@@ -297,8 +232,6 @@ private fun AboutContentBody(
     useBlur: Boolean,
     topAppBarScrollBehavior: ScrollBehavior,
     onLogoHeightChanged: (Int) -> Unit,
-    onGetUpdateClicked: () -> Unit,
-    onDirectUpdateClicked: () -> Unit,
     onLicenseClicked: () -> Unit,
     onLogToggle: (Boolean) -> Unit,
     onLogExport: () -> Unit,
@@ -490,15 +423,6 @@ private fun AboutContentBody(
                     fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                 )
-                if (uiState.hasUpdate) {
-                    Text(
-                        modifier = Modifier.padding(top = 4.dp),
-                        text = stringResource(R.string.update_available, uiState.remoteVersion),
-                        fontSize = 14.sp,
-                        color = MiuixTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center,
-                    )
-                }
             }
         }
 
@@ -581,18 +505,6 @@ private fun AboutContentBody(
                             description = stringResource(R.string.open_source_license_settings_description),
                             onClick = onLicenseClicked,
                         )
-                        MiuixNavigationItemWidget(
-                            title = stringResource(R.string.get_update),
-                            description = stringResource(R.string.get_update_detail),
-                            onClick = onGetUpdateClicked,
-                        )
-                        if (uiState.hasUpdate) {
-                            MiuixNavigationItemWidget(
-                                title = stringResource(R.string.get_update_directly),
-                                description = stringResource(R.string.get_update_directly_desc),
-                                onClick = onDirectUpdateClicked,
-                            )
-                        }
                     }
 
                     if (AppConfig.isLogEnabled && context.packageName == BuildConfig.APPLICATION_ID) {

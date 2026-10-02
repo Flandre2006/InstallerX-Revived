@@ -5,7 +5,7 @@ package com.rosan.installer.domain.engine.model.install
 data class InstallMetadata(
     val sourceUris: List<String> = emptyList(),
     val referrerUri: String? = null,
-    val operationSessionKey: String? = null,
+    val installerSessionId: String? = null,
     val onPlatformSessionActiveChanged: (sessionId: Int, active: Boolean) -> Unit = { _, _ -> },
 ) {
     companion object {

@@ -86,7 +86,7 @@ gpr.key=YOUR_PERSONAL_ACCESS_TOKEN
 別のアプリ ID を使う PR 向けテストビルド:
 
 ```bash
-./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.revived.test"
+./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.rev.test"
 ```
 
 ## よくある質問

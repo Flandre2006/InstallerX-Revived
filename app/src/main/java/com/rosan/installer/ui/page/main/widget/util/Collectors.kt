@@ -53,8 +53,6 @@ fun LogEventCollector(viewModel: AboutViewModel) {
                 }
 
                 is AboutEvent.ShareLogFailed -> context.toast(event.error)
-
-                else -> Unit
             }
         }
     }

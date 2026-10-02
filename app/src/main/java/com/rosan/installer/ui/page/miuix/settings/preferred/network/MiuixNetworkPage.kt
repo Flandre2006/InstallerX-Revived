@@ -36,19 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rosan.installer.R
 import com.rosan.installer.domain.settings.model.config.NetworkSourceMode
-import com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel
 import com.rosan.installer.domain.settings.model.preferences.HttpProfile
 import com.rosan.installer.ui.navigation.LocalNavigator
 import com.rosan.installer.ui.page.main.settings.preferred.network.NetworkSettingsAction
 import com.rosan.installer.ui.page.main.settings.preferred.network.NetworkSettingsViewModel
 import com.rosan.installer.ui.page.miuix.widgets.MiuixBackButton
-import com.rosan.installer.ui.page.miuix.widgets.MiuixCustomGithubProxyUrlDialog
-import com.rosan.installer.ui.page.miuix.widgets.MiuixGithubUpdateChannelSelectionDialog
 import com.rosan.installer.ui.theme.getMiuixAppBarColor
 import com.rosan.installer.ui.theme.installerMiuixBlurEffect
 import com.rosan.installer.ui.theme.rememberMiuixBlurBackdrop
 import org.koin.androidx.compose.koinViewModel
-import top.yukonga.miuix.kmp.basic.BasicComponent
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.DropdownItem
@@ -75,8 +71,6 @@ fun MiuixNetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koi
         .only(WindowInsetsSides.Horizontal)
         .asPaddingValues()
     val topBarBackdrop = rememberMiuixBlurBackdrop(useBlur)
-    val showChannelDialog = remember { mutableStateOf(false) }
-    val showCustomProxyDialog = remember { mutableStateOf(false) }
     var pendingNetworkSourceMode by rememberSaveable { mutableStateOf<NetworkSourceMode?>(null) }
     var exitAfterInternetDisable by rememberSaveable { mutableStateOf(false) }
 
@@ -94,49 +88,6 @@ fun MiuixNetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koi
             viewModel.dispatch(NetworkSettingsAction.ConfirmNetworkSourceMode(mode))
         },
     )
-
-    if (showChannelDialog.value) {
-        MiuixGithubUpdateChannelSelectionDialog(
-            showState = showChannelDialog,
-            currentSelection = uiState.githubUpdateChannel,
-            onDismiss = { showChannelDialog.value = false },
-            onConfirm = { channel ->
-                showChannelDialog.value = false
-                viewModel.dispatch(NetworkSettingsAction.ChangeGithubUpdateChannel(channel))
-                if (channel == GithubUpdateChannel.CUSTOM) {
-                    showCustomProxyDialog.value = true
-                }
-            },
-        )
-    }
-
-    if (showCustomProxyDialog.value) {
-        MiuixCustomGithubProxyUrlDialog(
-            showState = showCustomProxyDialog,
-            initialUrl = uiState.customGithubProxyUrl,
-            onDismiss = {
-                showCustomProxyDialog.value = false
-                if (uiState.customGithubProxyUrl.isEmpty()) {
-                    viewModel.dispatch(
-                        NetworkSettingsAction.ChangeGithubUpdateChannel(
-                            GithubUpdateChannel.OFFICIAL,
-                        ),
-                    )
-                }
-            },
-            onConfirm = { url ->
-                showCustomProxyDialog.value = false
-                viewModel.dispatch(NetworkSettingsAction.ChangeCustomGithubProxyUrl(url))
-                if (url.isEmpty()) {
-                    viewModel.dispatch(
-                        NetworkSettingsAction.ChangeGithubUpdateChannel(
-                            GithubUpdateChannel.OFFICIAL,
-                        ),
-                    )
-                }
-            },
-        )
-    }
 
     Scaffold(
         topBar = {
@@ -239,25 +190,6 @@ fun MiuixNetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koi
                                     viewModel.dispatch(NetworkSettingsAction.ChangeHttpProfile(profile))
                                 }
                             },
-                        )
-
-                        val channelSummary = when (uiState.githubUpdateChannel) {
-                            GithubUpdateChannel.OFFICIAL -> stringResource(
-                                R.string.lab_update_github_proxy_official,
-                            )
-
-                            GithubUpdateChannel.PROXY_7ED -> stringResource(
-                                R.string.lab_update_github_proxy_7ed,
-                            )
-
-                            GithubUpdateChannel.CUSTOM -> uiState.customGithubProxyUrl.ifBlank {
-                                stringResource(R.string.lab_update_github_proxy_custom)
-                            }
-                        }
-                        BasicComponent(
-                            title = stringResource(R.string.lab_update_github_proxy),
-                            summary = channelSummary,
-                            onClick = { showChannelDialog.value = true },
                         )
                     }
                 }

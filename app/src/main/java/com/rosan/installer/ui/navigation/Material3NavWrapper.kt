@@ -40,10 +40,9 @@ fun Material3MainPageWrapper(uiState: ThemeState, sharedViewModel: SettingsShare
     val homeLabel = stringResource(id = R.string.home)
     val homeIcon = ImageVector.vectorResource(R.drawable.ic_tile_icon)
     val configLabel = stringResource(R.string.config)
-    val historyLabel = stringResource(R.string.history)
     val preferredLabel = stringResource(R.string.preferred)
 
-    val tabs = remember(homeLabel, configLabel, historyLabel, preferredLabel) {
+    val tabs = remember(homeLabel, configLabel, preferredLabel) {
         listOf(
             NavigationTab(
                 icon = homeIcon,
@@ -52,10 +51,6 @@ fun Material3MainPageWrapper(uiState: ThemeState, sharedViewModel: SettingsShare
             NavigationTab(
                 icon = AppIcons.RoomPreferences,
                 label = configLabel,
-            ),
-            NavigationTab(
-                icon = AppIcons.History,
-                label = historyLabel,
             ),
             NavigationTab(
                 icon = AppIcons.SettingsSuggest,

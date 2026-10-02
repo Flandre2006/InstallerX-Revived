@@ -13,11 +13,6 @@ import com.rosan.installer.domain.settings.model.config.ConfigModel
  */
 interface AppInstallerRepository {
     /**
-     * Returns the package name that will be submitted to PackageInstaller as the installer.
-     */
-    suspend fun resolveInstallerPackageName(config: ConfigModel): String?
-
-    /**
      * Performs the installation of packages.
      *
      * @param config The configuration model.

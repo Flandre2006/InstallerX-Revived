@@ -59,8 +59,6 @@ data class AppPreferences(
     val networkSourceMode: NetworkSourceMode,
     val networkSourceModeWarningAcknowledged: Boolean,
     val allowInternetAccess: Boolean,
-    val githubUpdateChannel: GithubUpdateChannel,
-    val customGithubProxyUrl: String,
     // Lab Settings
     val labRootEnableModuleFlash: Boolean,
     val labRootShowModuleArt: Boolean,

@@ -378,15 +378,7 @@ fun PreferredPage(
                         BaseWidget(
                             icon = AppIcons.Info,
                             title = stringResource(R.string.about_detail),
-                            description = if (uiState.hasUpdate) {
-                                stringResource(
-                                    R.string.update_available,
-                                    uiState.remoteVersion,
-                                )
-                            } else {
-                                "$revLevel ${AppConfig.VERSION_NAME}"
-                            },
-                            descriptionColor = if (uiState.hasUpdate) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                            description = "$revLevel ${AppConfig.VERSION_NAME}",
                             onClick = { navigator.push(Route.About) },
                         )
                     }
@@ -475,7 +467,6 @@ private fun BackupRestorePreview.formatBackupRestorePreview(context: Context): S
             profileCount,
             scopeCount,
             settingCount,
-            historyCount,
         ),
     )
     if (ignoredSettingCount > 0) {

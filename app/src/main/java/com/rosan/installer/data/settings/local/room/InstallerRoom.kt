@@ -6,6 +6,7 @@ import androidx.room3.AutoMigration
 import androidx.room3.ColumnTypeConverters
 import androidx.room3.Database
 import androidx.room3.DeleteColumn
+import androidx.room3.DeleteTable
 import androidx.room3.Room
 import androidx.room3.RoomDatabase
 import androidx.room3.migration.AutoMigrationSpec
@@ -14,10 +15,8 @@ import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.execSQL
 import com.rosan.installer.data.settings.local.room.dao.AppDao
 import com.rosan.installer.data.settings.local.room.dao.ConfigDao
-import com.rosan.installer.data.settings.local.room.dao.OperationHistoryDao
 import com.rosan.installer.data.settings.local.room.entity.AppEntity
 import com.rosan.installer.data.settings.local.room.entity.ConfigEntity
-import com.rosan.installer.data.settings.local.room.entity.OperationHistoryEntity
 import com.rosan.installer.data.settings.local.room.entity.converter.AuthorizerConverter
 import com.rosan.installer.data.settings.local.room.entity.converter.DexoptModeConverter
 import com.rosan.installer.data.settings.local.room.entity.converter.InstallModeConverter
@@ -25,15 +24,14 @@ import com.rosan.installer.data.settings.local.room.entity.converter.InstallReas
 import com.rosan.installer.data.settings.local.room.entity.converter.InstallRequesterModeConverter
 import com.rosan.installer.data.settings.local.room.entity.converter.InstallerModeConverter
 import com.rosan.installer.data.settings.local.room.entity.converter.PackageSourceConverter
-import com.rosan.installer.data.settings.local.room.entity.converter.StringListConverter
 import com.rosan.installer.data.settings.local.room.entity.converter.ToastModeConverter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
-const val INSTALLER_ROOM_SCHEMA_VERSION = 18
+const val INSTALLER_ROOM_SCHEMA_VERSION = 19
 
 @Database(
-    entities = [AppEntity::class, ConfigEntity::class, OperationHistoryEntity::class],
+    entities = [AppEntity::class, ConfigEntity::class],
     version = INSTALLER_ROOM_SCHEMA_VERSION,
     exportSchema = true,
     autoMigrations = [
@@ -51,6 +49,7 @@ const val INSTALLER_ROOM_SCHEMA_VERSION = 18
         AutoMigration(from = 15, to = 16),
         AutoMigration(from = 16, to = 17),
         AutoMigration(from = 17, to = 18),
+        AutoMigration(from = 18, to = 19, spec = InstallerRoom.Migration18To19::class),
     ],
 )
 @ColumnTypeConverters(
@@ -61,7 +60,6 @@ const val INSTALLER_ROOM_SCHEMA_VERSION = 18
     DexoptModeConverter::class,
     PackageSourceConverter::class,
     InstallReasonConverter::class,
-    StringListConverter::class,
     ToastModeConverter::class,
 )
 abstract class InstallerRoom : RoomDatabase() {
@@ -89,8 +87,9 @@ abstract class InstallerRoom : RoomDatabase() {
 
     abstract val configDao: ConfigDao
 
-    abstract val operationHistoryDao: OperationHistoryDao
-
     @DeleteColumn(tableName = "config", columnName = "allow_restricted_permissions")
     class Migration7To8 : AutoMigrationSpec
+
+    @DeleteTable(tableName = "operation_history")
+    class Migration18To19 : AutoMigrationSpec
 }

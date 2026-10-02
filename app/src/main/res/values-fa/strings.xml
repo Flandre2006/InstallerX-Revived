@@ -15,13 +15,7 @@
     <string name="lab">آزمایشگاه</string>
     <string name="lab_desc">دسترسی به ویژگی‌های آزمایشی و توسعه‌دهنده</string>
     <string name="debug">اشکال‌زدایی</string>
-    <string name="about_detail">درباره InstallerX Revived</string>
-    <string name="updating">درحال بروزرسانی…</string>
-    <string name="get_update">دریافت بروزرسانی</string>
-    <string name="get_update_detail">بررسی به‌روزرسانی نرم‌افزار و ویژگی‌های جدید</string>
-    <string name="update_available">به‌روزرسانی دردسترس است: %1$s</string>
-    <string name="get_update_directly">دریافت به‌روزرسانی به‌صورت مستقیم</string>
-    <string name="get_update_directly_desc">به‌روزرسانی مستقیم را از گیت‌هاب دریافت و نصب کنید، هیچ حافظه‌ی کشی باقی نخواهد ماند</string>
+    <string name="about_detail">درباره InstallerX</string>
     <string name="get_source_code">بررسی کد منبع</string>
     <string name="get_source_code_detail">بررسی کد منبع در گیت‌هاب</string>
     <string name="save_logs">ذخیره گزارش‌ها</string>
@@ -30,8 +24,8 @@
     <string name="export_logs_desc">خروجی گرفتن از گزارش‌های برنامه</string>
     <string name="internet_access_enabled">آنلاین</string>
     <string name="internet_access_disabled">آفلاین</string>
-    <string name="uninstall_title">حذف InstallerX Revived</string>
-    <string name="uninstall_content">بعد از حذف این برنامه، دیگر قادر به استفاده از InstallerX Revived برای نصب برنامه‌ها نخواهید بود.</string>
+    <string name="uninstall_title">حذف InstallerX</string>
+    <string name="uninstall_content">بعد از حذف این برنامه، دیگر قادر به استفاده از InstallerX برای نصب برنامه‌ها نخواهید بود.</string>
     <string name="stable">پایدار</string>
     <string name="preview">پیش‌نمایش</string>
     <string name="unstable">ناپایدار</string>
@@ -292,17 +286,5 @@
     <string name="shizuku_not_available">لطفا sui یا شیزوکو رو فعال کنید</string>
     <string name="dhizuku_not_authorized">لطفا دسترسی به دیزوکو رو بدید</string>
     <string name="dhizuku_not_available">لطفا دیزوکو رو فعال کنید</string>
-    <string name="history">تاریخچه</string>
-    <string name="history_empty_title">تاریخچه ای موجود نیست</string>
-    <string name="history_empty_desc">تاریخچه ی نصبی ها و حذفی ها بعد عملیات موفق اینجا نشان خواهد داده شد.</string>
-    <string name="history_clear">پاک کردن تاریخچه</string>
-    <string name="history_clear_confirm_title">تاریخچه پاک شود؟</string>
-    <string name="history_clear_confirm_desc">تاریخچه تمام نصبی ها و حذفی پاک خواهد شد. این عملیات قابل بازگشت نیست.</string>
-    <string name="history_operation_install">نصب</string>
-    <string name="history_operation_uninstall">حذف کردن</string>
-    <string name="history_status_success">موفقیت</string>
-    <string name="history_status_failed">شکست</string>
-    <string name="history_version_fresh_install">نصب تمیز (حذف و سپس نصب)</string>
-    <string name="history_version_update">بروزرسانی</string>
     <string name="setting_lsposed_module_title">ماژول LSPosed فعال است</string>
 </resources>

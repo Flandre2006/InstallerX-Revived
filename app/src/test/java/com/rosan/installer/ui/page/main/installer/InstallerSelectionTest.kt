@@ -613,8 +613,6 @@ class InstallerSelectionTest {
             networkSourceMode = com.rosan.installer.domain.settings.model.config.NetworkSourceMode.entries.first(),
             networkSourceModeWarningAcknowledged = false,
             allowInternetAccess = false,
-            githubUpdateChannel = com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel.entries.first(),
-            customGithubProxyUrl = "",
             labRootEnableModuleFlash = false,
             labRootShowModuleArt = false,
             labRootMode = com.rosan.installer.domain.settings.model.preferences.RootMode.entries.first(),

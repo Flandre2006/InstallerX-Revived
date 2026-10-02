@@ -64,7 +64,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import top.yukonga.miuix.kmp.basic.BasicComponent
-import top.yukonga.miuix.kmp.basic.BasicComponentColors
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.MiuixScrollBehavior
@@ -360,18 +359,7 @@ fun MiuixPreferredPage(
                     )
                     BasicComponent(
                         title = stringResource(R.string.about_detail),
-                        summary = if (uiState.hasUpdate) {
-                            stringResource(
-                                R.string.update_available,
-                                uiState.remoteVersion,
-                            )
-                        } else {
-                            "$revLevel ${AppConfig.VERSION_NAME}"
-                        },
-                        summaryColor = BasicComponentColors(
-                            color = if (uiState.hasUpdate) MiuixTheme.colorScheme.primary else MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                            disabledColor = MiuixTheme.colorScheme.disabledOnSecondaryVariant,
-                        ),
+                        summary = "$revLevel ${AppConfig.VERSION_NAME}",
                         onClick = { navigator.push(Route.About) },
                     )
                 }
@@ -549,7 +537,6 @@ private fun BackupRestorePreview.formatBackupRestorePreview(context: Context): S
             profileCount,
             scopeCount,
             settingCount,
-            historyCount,
         ),
     )
     if (ignoredSettingCount > 0) {

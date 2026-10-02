@@ -86,7 +86,7 @@ Lokaler Debug-Build:
 PR-Testbuild mit separater App-ID:
 
 ```bash
-./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.revived.test"
+./gradlew assemblePreviewDebug -PAPP_ID="com.rosan.installer.x.rev.test"
 ```
 
 ## Häufige Fragen

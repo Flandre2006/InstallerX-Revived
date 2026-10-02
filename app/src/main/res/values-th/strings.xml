@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">เกี่ยวกับ</string>
-    <string name="about_detail">เกี่ยวกับ InstallerX Revived</string>
+    <string name="about_detail">เกี่ยวกับ InstallerX</string>
     <string name="add">เพิ่ม</string>
     <string name="allocate_aggressive">จัดสรรอย่างเข้มข้น</string>
     <string name="allocate_aggressive_desc">ระบุว่าแพ็คเกจเป็น ส่วนสำคัญต่อสุขภาพหรือความปลอดภัยของระบบ และจะลบไฟล์ที่ล้างได้มากขึ้นเพื่อเพิ่มพื้นที่หากจำเป็น</string>
@@ -147,8 +147,6 @@
     <string name="from_adb_desc">บอกระบบว่าคำขอติดตั้งมาจาก ADB</string>
     <string name="full_app">แอปฉบับเต็ม</string>
     <string name="full_app_desc">ระบุว่าแพ็คเกจที่กำลังติดตั้งเป็นแอปฉบับเต็ม สามารถใช้เพื่ออัปเกรด Instant Apps เป็นแอปฉบับเต็มได้</string>
-    <string name="get_update">รับการอัปเดต</string>
-    <string name="get_update_detail">ตรวจสอบการอัปเดตซอฟต์แวร์และฟีเจอร์ใหม่</string>
     <string name="global">ทั่วโลก</string>
     <string name="ignore_battery_optimizations">ละเว้นการเพิ่มประสิทธิภาพแบตเตอรี่</string>
     <string name="ignore_battery_optimizations_desc">มีประโยชน์ในบาง ROMs ที่กำหนดเองซึ่งมีนโยบายพื้นหลังที่เข้มงวด</string>

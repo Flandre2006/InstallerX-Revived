@@ -52,13 +52,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rosan.installer.R
 import com.rosan.installer.domain.settings.model.config.NetworkSourceMode
-import com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel
 import com.rosan.installer.domain.settings.model.preferences.HttpProfile
 import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.navigation.LocalNavigator
-import com.rosan.installer.ui.page.main.widget.dialog.CustomGithubProxyUrlDialog
-import com.rosan.installer.ui.page.main.widget.dialog.GithubUpdateChannelSelectionDialog
-import com.rosan.installer.ui.page.main.widget.setting.BaseWidget
 import com.rosan.installer.ui.page.main.widget.setting.DropDownMenuWidget
 import com.rosan.installer.ui.page.main.widget.setting.ExpressiveBackButton
 import com.rosan.installer.ui.page.main.widget.setting.SegmentedColumn
@@ -82,8 +78,6 @@ fun NetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koinView
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(topAppBarState)
     val backdrop = rememberMaterial3BlurBackdrop(useBlur)
     val uiState by viewModel.state.collectAsStateWithLifecycle()
-    var showChannelDialog by remember { mutableStateOf(false) }
-    var showCustomProxyDialog by remember { mutableStateOf(false) }
     var pendingNetworkSourceMode by rememberSaveable { mutableStateOf<NetworkSourceMode?>(null) }
     var exitAfterInternetDisable by rememberSaveable { mutableStateOf(false) }
 
@@ -111,47 +105,6 @@ fun NetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koinView
             dismissButton = {
                 TextButton(onClick = { pendingNetworkSourceMode = null }) {
                     Text(stringResource(R.string.cancel))
-                }
-            },
-        )
-    }
-
-    if (showChannelDialog) {
-        GithubUpdateChannelSelectionDialog(
-            currentSelection = uiState.githubUpdateChannel,
-            onDismiss = { showChannelDialog = false },
-            onConfirm = { channel ->
-                showChannelDialog = false
-                viewModel.dispatch(NetworkSettingsAction.ChangeGithubUpdateChannel(channel))
-                if (channel == GithubUpdateChannel.CUSTOM) {
-                    showCustomProxyDialog = true
-                }
-            },
-        )
-    }
-
-    if (showCustomProxyDialog) {
-        CustomGithubProxyUrlDialog(
-            initialUrl = uiState.customGithubProxyUrl,
-            onDismiss = {
-                showCustomProxyDialog = false
-                if (uiState.customGithubProxyUrl.isEmpty()) {
-                    viewModel.dispatch(
-                        NetworkSettingsAction.ChangeGithubUpdateChannel(
-                            GithubUpdateChannel.OFFICIAL,
-                        ),
-                    )
-                }
-            },
-            onConfirm = { url ->
-                showCustomProxyDialog = false
-                viewModel.dispatch(NetworkSettingsAction.ChangeCustomGithubProxyUrl(url))
-                if (url.isEmpty()) {
-                    viewModel.dispatch(
-                        NetworkSettingsAction.ChangeGithubUpdateChannel(
-                            GithubUpdateChannel.OFFICIAL,
-                        ),
-                    )
                 }
             },
         )
@@ -239,29 +192,6 @@ fun NetworkPage(useBlur: Boolean, viewModel: NetworkSettingsViewModel = koinView
                                     )
                                 },
                             )
-                        }
-
-                        val currentChannel = uiState.githubUpdateChannel
-                        item {
-                            val channelSummary = when (currentChannel) {
-                                GithubUpdateChannel.OFFICIAL -> stringResource(
-                                    R.string.lab_update_github_proxy_official,
-                                )
-
-                                GithubUpdateChannel.PROXY_7ED -> stringResource(
-                                    R.string.lab_update_github_proxy_7ed,
-                                )
-
-                                GithubUpdateChannel.CUSTOM -> uiState.customGithubProxyUrl.ifBlank {
-                                    stringResource(R.string.lab_update_github_proxy_custom)
-                                }
-                            }
-                            BaseWidget(
-                                icon = AppIcons.UpdateChannel,
-                                title = stringResource(R.string.lab_update_github_proxy),
-                                description = channelSummary,
-                                onClick = { showChannelDialog = true },
-                            ) {}
                         }
                     }
                 }

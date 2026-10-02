@@ -18,7 +18,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rosan.installer.R
 import com.rosan.installer.domain.settings.model.preferences.ThemeState
 import com.rosan.installer.domain.settings.repository.ConfigRepository
-import com.rosan.installer.ui.icons.AppIcons
 import com.rosan.installer.ui.library.FloatingBottomBarMode
 import com.rosan.installer.ui.page.main.settings.SettingsSharedViewModel
 import com.rosan.installer.ui.page.miuix.settings.SettingsCompactLayout
@@ -51,10 +50,9 @@ fun MiuixMainPageWrapper(uiState: ThemeState, sharedViewModel: SettingsSharedVie
     val homeLabel = stringResource(R.string.home)
     val homeIcon = ImageVector.vectorResource(R.drawable.ic_tile_icon)
     val configLabel = stringResource(R.string.config)
-    val historyLabel = stringResource(R.string.history)
     val preferredLabel = stringResource(R.string.preferred)
 
-    val navigationItems = remember(homeLabel, configLabel, historyLabel, preferredLabel) {
+    val navigationItems = remember(homeLabel, configLabel, preferredLabel) {
         listOf(
             NavigationItem(
                 label = homeLabel,
@@ -63,10 +61,6 @@ fun MiuixMainPageWrapper(uiState: ThemeState, sharedViewModel: SettingsSharedVie
             NavigationItem(
                 label = configLabel,
                 icon = Icons.Rounded.RoomPreferences,
-            ),
-            NavigationItem(
-                label = historyLabel,
-                icon = AppIcons.History,
             ),
             NavigationItem(
                 label = preferredLabel,

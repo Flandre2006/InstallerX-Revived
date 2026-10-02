@@ -43,10 +43,6 @@ class AppInstallerRepositoryImpl(
     private val platformInstallPolicyChecker: PlatformInstallPolicyChecker,
     private val selfUpdateRecoveryRepository: SelfUpdateRecoveryRepository,
 ) : AppInstallerRepository {
-    override suspend fun resolveInstallerPackageName(config: ConfigModel): String? = executeWithRepo(config) { repo ->
-        repo.resolveInstallerPackageName(config)
-    }
-
     override suspend fun doInstallWork(
         config: ConfigModel,
         entities: List<InstallEntity>,
@@ -111,7 +107,7 @@ class AppInstallerRepositoryImpl(
     ) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.CINNAMON_BUN) return
         if (entities.firstOrNull()?.packageName != context.packageName) return
-        val sessionId = metadata.operationSessionKey ?: return
+        val sessionId = metadata.installerSessionId ?: return
 
         val shouldDelete = config.shouldAutoDeleteSource(entities.firstOrNull()?.sourceType)
         val deletePaths = if (shouldDelete) {
@@ -135,7 +131,6 @@ class AppInstallerRepositoryImpl(
             selfUpdateRecoveryRepository.updatePostInstallState(
                 sessionId = sessionId,
                 sourceDeletion = sourceDeletion,
-                historyAuthorizer = config.authorizer,
             )
         } catch (error: CancellationException) {
             throw error

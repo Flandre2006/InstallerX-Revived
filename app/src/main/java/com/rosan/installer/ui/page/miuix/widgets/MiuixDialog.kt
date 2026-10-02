@@ -22,18 +22,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.rosan.installer.R
-import com.rosan.installer.domain.settings.model.preferences.GithubUpdateChannel
 import com.rosan.installer.domain.settings.model.preferences.RootMode
-import top.yukonga.miuix.kmp.basic.BasicComponent
 import top.yukonga.miuix.kmp.basic.ButtonDefaults
-import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.CardColors
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextButton
@@ -119,60 +113,6 @@ fun MiuixUnsavedChangesDialog(
                         colors = ButtonDefaults.textButtonColorsPrimary(), // Apply primary color style
                     )
                 }
-            }
-        },
-    )
-}
-
-@Composable
-fun MiuixUpdateDialog(showState: MutableState<Boolean>, onDismiss: () -> Unit) {
-    val uriHandler = LocalUriHandler.current
-
-    WindowDialog(
-        show = showState.value,
-        onDismissRequest = onDismiss,
-        title = stringResource(R.string.get_update),
-        content = {
-            Column {
-                Card(
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    colors = CardColors(
-                        color = MiuixTheme.colorScheme.secondaryVariant,
-                        contentColor = MiuixTheme.colorScheme.onSurface,
-                    ),
-                ) {
-                    BasicComponent(
-                        title = "GitHub",
-                        onClick = {
-                            uriHandler.openUri("https://github.com/wxxsfxyzm/InstallerX-Revived/releases")
-                            onDismiss()
-                        },
-                        endActions = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_link_icon),
-                                contentDescription = null,
-                            )
-                        },
-                    )
-                    BasicComponent(
-                        title = "Telegram",
-                        onClick = {
-                            uriHandler.openUri("https://t.me/installerx_revived")
-                            onDismiss()
-                        },
-                        endActions = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_link_icon),
-                                contentDescription = null,
-                            )
-                        },
-                    )
-                }
-                TextButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onDismiss,
-                    text = stringResource(R.string.cancel),
-                )
             }
         },
     )
@@ -456,133 +396,6 @@ fun MiuixUninstallPackageDialog(showState: MutableState<Boolean>, onDismiss: () 
                         onClick = {
                             onConfirm(packageName)
                             packageName = ""
-                        },
-                        enabled = isConfirmEnabled,
-                        colors = ButtonDefaults.textButtonColorsPrimary(),
-                    )
-                }
-            }
-        },
-    )
-}
-
-@Composable
-fun MiuixGithubUpdateChannelSelectionDialog(
-    showState: MutableState<Boolean>,
-    currentSelection: GithubUpdateChannel,
-    onDismiss: () -> Unit,
-    onConfirm: (GithubUpdateChannel) -> Unit,
-) {
-    val channels = remember {
-        listOf(
-            GithubUpdateChannel.OFFICIAL,
-            GithubUpdateChannel.PROXY_7ED,
-            GithubUpdateChannel.CUSTOM,
-        )
-    }
-
-    val channelNames = remember {
-        mapOf(
-            GithubUpdateChannel.OFFICIAL to R.string.lab_update_github_proxy_official,
-            GithubUpdateChannel.PROXY_7ED to R.string.lab_update_github_proxy_7ed,
-            GithubUpdateChannel.CUSTOM to R.string.lab_update_github_proxy_custom,
-        )
-    }
-
-    var selectedChannel by remember { mutableStateOf(currentSelection) }
-
-    WindowDialog(
-        show = showState.value,
-        onDismissRequest = onDismiss,
-        title = stringResource(R.string.lab_update_github_proxy),
-        insideMargin = DpSize(0.dp, 24.dp),
-        content = {
-            Column {
-                Column(Modifier.verticalScroll(rememberScrollState())) {
-                    channels.forEach { channel ->
-                        val isSelected = selectedChannel == channel
-
-                        SelectableRow(
-                            text = stringResource(channelNames[channel]!!),
-                            isSelected = isSelected,
-                            onClick = { selectedChannel = channel },
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    @Suppress("DEPRECATION")
-                    TextButton(
-                        modifier = Modifier.weight(1f),
-                        onClick = onDismiss,
-                        text = stringResource(R.string.cancel),
-                    )
-                    @Suppress("DEPRECATION")
-                    TextButton(
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            onConfirm(selectedChannel)
-                            onDismiss()
-                        },
-                        text = stringResource(R.string.confirm),
-                        colors = ButtonDefaults.textButtonColorsPrimary(),
-                    )
-                }
-            }
-        },
-    )
-}
-
-@Composable
-fun MiuixCustomGithubProxyUrlDialog(
-    showState: MutableState<Boolean>,
-    initialUrl: String,
-    onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit,
-) {
-    var url by remember { mutableStateOf(initialUrl) }
-    val isConfirmEnabled = url.isNotBlank()
-
-    WindowDialog(
-        show = showState.value,
-        onDismissRequest = onDismiss,
-        title = stringResource(R.string.lab_update_github_proxy_custom),
-        content = {
-            Column {
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    value = url,
-                    onValueChange = { url = it },
-                    label = "GHProxy URL",
-                    useLabelAsPlaceholder = true,
-                    singleLine = true,
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                ) {
-                    @Suppress("DEPRECATION")
-                    TextButton(
-                        modifier = Modifier.weight(1f),
-                        text = stringResource(R.string.cancel),
-                        onClick = onDismiss,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    @Suppress("DEPRECATION")
-                    TextButton(
-                        modifier = Modifier.weight(1f),
-                        text = stringResource(R.string.confirm),
-                        onClick = {
-                            onConfirm(url)
-                            onDismiss()
                         },
                         enabled = isConfirmEnabled,
                         colors = ButtonDefaults.textButtonColorsPrimary(),

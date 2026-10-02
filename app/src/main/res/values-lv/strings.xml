@@ -10,7 +10,6 @@
     <string name="menu">Izvēlne</string>
     <string name="about">Par lietotni</string>
     <string name="other">Pārējie</string>
-    <string name="updating">Atjaunina…</string>
     <string name="color_pink">Rozā</string>
     <string name="color_red">Sarkans</string>
     <string name="color_orange">Oranžs</string>
@@ -60,8 +59,8 @@
     <string name="installer_live_channel_short_text_preparing">Sagatavo</string>
     <string name="installer_live_channel_short_text_analysing">Analizē</string>
     <string name="installer_live_channel_short_text_success">Veiksmīgi</string>
-    <string name="uninstall_title">Noņemt InstallerX Revived</string>
-    <string name="uninstall_content">Pēc šīs lietotnes noņemšanas jūs vairs nevarēsiet izmantot InstallerX Revived, lai uzstādītu lietotnes.</string>
+    <string name="uninstall_title">Noņemt InstallerX</string>
+    <string name="uninstall_content">Pēc šīs lietotnes noņemšanas jūs vairs nevarēsiet izmantot InstallerX, lai uzstādītu lietotnes.</string>
     <string name="installer_uninstall_app">Noņemt lietotni</string>
     <string name="installer_uninstalling">Noņem</string>
     <string name="uninstall_keep_data">Saglabāt datus</string>
